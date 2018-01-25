@@ -8,6 +8,31 @@
     <title>Activity 1: CSS styling</title>
     <!-- Your styles here -->
     <style>
+      #first_block{
+        width: 100%;
+        border: 1px solid black;
+        margin: 10px;
+      }
+
+      /*
+        em (lo que mide una M mayúscula)
+        rem (em relativo al body, para evitar heredar de un div concreto como con el em)
+        vh, vw (100vw = ancho de la ventana, NO 100%)
+      */
+
+      #second_block{
+        width: 50%;
+        background-color: #FF0000;
+        font-weight: bold;
+        margin: 1em;
+      }
+
+      .third_block{
+        width: 50vh;
+        color: #0000FF;
+        padding: 1rem;
+      }
+
     </style>
   </head>
   <body>
