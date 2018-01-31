@@ -1,20 +1,40 @@
 
 #scenario{
-    display: table;
+    position: relative;
     margin: 0 auto;
-    width: 50%;
-    background-color: whitesmoke;
+    margin-top: 50px;
+    height: 80vh;
+    width: 80vw;
+    background-color: red;
 }
 
-.row{
-    display: table-row;
+.row{  
+    margin: 0 auto;
+    width: 418px;
+    background-color: blue;
 }
 
 .column{
-    display: table-cell;
-    margin: 5px;
+    display: inline-flex;
     height: 50px;
     width: 100px;
-    float: left;    
-    background-color: silver;
+    margin: 2px;   
+    background-color: yellow;
+}
+
+.ball{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: black;
+    border-radius: 100px;
+    bottom: 21px;
+}
+
+.paddle{
+    position: absolute;
+    width: 100px;
+    height: 20px;
+    bottom: 0px;
+    background-color: green;
 }
