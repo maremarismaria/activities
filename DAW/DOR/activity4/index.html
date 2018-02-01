@@ -7,7 +7,17 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    <style>
+      .main{
+        background-color: red;
+      }
+      .aside{
+        background-color: blue;
+      }
+      .footer{
+        background-color: grey;
+      }
+    </style>
     <title>Activity 2: Responsive design</title>
   </head>
   <body>
@@ -28,6 +38,47 @@
     </ul>
 
     <!-- Your code here -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Option 1<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Option 2</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Option 3</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Option 3.1</a>
+              <a class="dropdown-item" href="#">Option 3.2</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    
+    <div class="container">
+      <div class="row">
+        <main class="main col-md-8 col-sm-12">
+            <p class="text-center">Main text</p>
+        </main>
+        <aside class="aside col-md-4 col-sm-12" style="background-color:blue">
+            <p class="text-center">Aside text</p>
+        </aside>
+      </div>
+    </div>
+
+    <footer class="footer container-fluid">
+      <div class="row">
+        <div class="col-12" style="background-color:grey">
+          <p class="text-center">Footer</p>
+        </div>
+      </div>
+    </footer>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
