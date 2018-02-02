@@ -1,31 +1,37 @@
 
-$(document).ready(function(){
+$().ready(function(){
     
     var numRows = 3;
     var numCols = 4;
-    var ballMovement = 0;
-    var paddleMovement = 0;
+    makeScenario(numRows, numCols);
 
-    makeScenario(numRows, numCols);     
+
+    //scenario properties
+    var scenarioPosition = $('#scenario').position();
+    var scenarioWidth = $('#scenario').width();
+
+    //ball properties
+    var ballMovement = 21;
+    var ballPosition = $('#ball').position();
+    
+    //paddle properties
+    var paddlePosition = $('#paddle').position();
+    var paddleWidth = $('#paddle').width();
+
+    //paddle movement
+    $(document).on('keydown', function(event){           
+        if(event.which == 37){ //<-
+            $('#paddle').css( {"left" : "-=10"} );
+        }
+
+        if(event.which == 39){ //->
+            $('#paddle').css( {"left" : "+=10"} );
+        }
+    });
 
     setInterval(function(){
 
-        $(document).keydown(function(event){
-            if(event.keyCode == 37){ //<-
-                paddleMovement -= 10;
-                document.getElementById('paddle').style.left = paddleMovement + "px";
-            }
-    
-            if(event.keyCode == 39){ //->
-                paddleMovement += 10;
-                document.getElementById('paddle').style.left = paddleMovement + "px";
-            }
-        });
-
-        ballMovement += 10;
-        document.getElementById('ball').style.bottom = ballMovement + "px";
-
-    }, 5000);
+    }, 3);
 
 });
 
@@ -33,6 +39,8 @@ $(document).ready(function(){
 
 function makeScenario(numRows, numCols){
     
+    //add stage
+
     for (var i = 0; i < numRows; i++) {
         var currentRow = 'row-' + i;
         $('#scenario').append("<div class='row' id=" + currentRow + ">");
@@ -46,6 +54,8 @@ function makeScenario(numRows, numCols){
     }
 
     $('#scenario').append("<div class= 'ball' id='ball'>");
-    $('#scenario').append("<div class='paddle' id='paddle'>");  
+    $('#scenario').append("<div class='paddle' id='paddle'>");
+
+    $('#ball').css( { "bottom" : "20" } );
 
 }
