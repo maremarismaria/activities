@@ -1,0 +1,43 @@
+
+#scenario{
+    position: relative;
+    margin: 0 auto;
+    margin-top: 50px;
+    height: 500px;
+    width: 600px;
+    background-color: #000;
+    overflow: hidden;
+}
+
+.row{  
+    margin: 0 auto;
+    background-color: #000;
+    font-family: Courier New, Courier, monospace;
+    text-align: center;
+}
+
+.column{
+    display: inline-block;
+    min-height: 30px;
+    min-width: 100px;
+    margin: 2px;   
+    background-color: #FFF;
+}
+
+.ball{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #F00;
+    border-radius: 100px;
+    left: 300px;
+    bottom: 20px;
+}
+
+.paddle{
+    position: absolute;
+    width: 100px;
+    height: 20px;
+    bottom: 0px;
+    background-color: grey;
+}
