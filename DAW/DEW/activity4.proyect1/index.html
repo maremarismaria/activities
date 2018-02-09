@@ -6,6 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>Activity 4: Arkanoid</title>
+    <style>
+
+      .row{
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        border: 1px solid #F00;
+      }
+      .brick{
+        border: 1px solid #000;
+        min-width: 100px;
+        height: 20px;
+      }
+      .hightlight{
+        background-color: yellow;
+      }
+    </style>
   </head>
   <body>
     <h1>Activity 4: Arkanoid</h1>
@@ -27,5 +44,35 @@
         <li>(1.5 points) Make the ball interact with the vaus</li>
         <li>(3.5 points) Make the ball collide with the bricks, each time the ball hits a brick it might change direction and the brick reduces 1 life. The brick dissapears (preserving the space it occupies) when it get to 0 lifes.</li>
       </ul>
+      <h2>Guiding code:</h2>
+      <div class="stage">
+        <div class="row"><div class="brick"></div><div class="brick"></div><div class="brick"></div></div>
+        <div class="row"><div class="brick"></div><div class="brick"></div><div class="brick"></div></div>
+      </div>
+
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+      <script>
+      document.onmousemove = handleMouseMove;
+      var intro;
+      function handleMouseMove(event) {
+          var x = event.clientX;
+          var y = event.clientY;
+          $('.brick').removeClass('hightlight');
+          $('.row').each(function(){
+            var bounds = this.getBoundingClientRect();
+            if (bounds.bottom >= y && bounds.top <= y){
+              $(this).children('.brick').each(function(){
+                var bounds = this.getBoundingClientRect();
+                if (bounds.left <= x && bounds.right >= x){
+                  $(this).addClass('hightlight');
+                }
+              })
+
+            }
+          })
+
+      }
+      </script>
+
   </body>
 </html>
