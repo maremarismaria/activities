@@ -79,9 +79,8 @@ $().ready(function(){
         //column colission
         $('.row').each(function() {
 
-            var row = this.getBoundingClientRect();
+            var row = this.getBoundingClientRect(); 
             
-
             if(ballY > row.top && ballY < row.bottom){
                 
                 $(this).children('.column').each(function(){
@@ -90,7 +89,7 @@ $().ready(function(){
 
                     if(ballY > column.top && ballY < column.bottom && ballX > column.left && ballX < column.right){
                         
-                        alert("hey");
+                        //alert("hey");
 
                     }
 
