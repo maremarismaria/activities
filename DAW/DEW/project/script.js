@@ -17,7 +17,7 @@ $().ready(function(){
     //ball properties
     var ballWidth = $('#ball').width();
     var ballX = scenarioWidth / 2;
-    var ballY = scenarioHeight - 40;
+    var ballY = scenarioHeight - (ballWidth * 2);
     var movX = 1;
     var movY = -1;
     
@@ -47,32 +47,34 @@ $().ready(function(){
 
         //top
         if(ballY < 0){ 
-            $('#ball').css( { "background-color" : "yellow" } );
+            $('#ball').css( { "background-image" : "url('assets/mario.png')" } );
             movY = -movY;
         }
 
         //bottom
         if (ballY > scenarioHeight - ballWidth){ 
-            $('#ball').css( { "background-color" : "blue" } );
+            
+            $('#ball').css( { "background-image" : "url('assets/mario-dead.png')" } );
             console.log("GAME OVER");
             movY = -movY;
         }
 
         //left
         if(ballX < 0){
-            $('#ball').css( { "background-color" : "green" } ); 
+            $('#ball').css( { "background-image" : "url('assets/mario.png')" } ); 
             movX = -movX;
         }
 
         //right
         if (ballX > scenarioWidth - ballWidth){ 
-            $('#ball').css( { "background-color" : "red" } );
+            $('#ball').css( { "background-image" : "url('assets/mario.png')" } );
             movX = -movX;
         }
 
         //paddle colission
         if (ballX > paddleX && ballX < paddleX + paddleWidth && ballY == scenarioHeight - paddleHeight - ballWidth){ 
-            $('#ball').css( { "background-color" : "blue" } );
+            //$('#ball').css( { "background-color" : "blue" } );
+            $('#ball').css( { "background-image" : "url('assets/mario-paddle.png')" } );
             movY = -movY;
         }
         
@@ -81,18 +83,19 @@ $().ready(function(){
 
             var row = this.getBoundingClientRect(); 
             
-            if(ballY > row.top && ballY < row.bottom){
-                
+            if(ballX + ballWidth > row.x && ballY + ballWidth < row.y){
+                console.log("hey");
+
+                movY = -movY;
+
                 $(this).children('.column').each(function(){
 
                     var column = this.getBoundingClientRect();
-
-                    if(ballY > column.top && ballY < column.bottom && ballX > column.left && ballX < column.right){
-                        
-                        //alert("hey");
-
+                    
+                    if(ballX > column.left && ballX < column.right){
+                            
                     }
-
+                    
                 });
 
             }
@@ -119,7 +122,7 @@ function makeScenario(level){
 
             var currentCol = 'col-' + j;
 
-            $('#' + currentRow).append("<div class='column' id=" + currentCol + " data-life=" + level[i][j].life + ">" + level[i][j].life + "</div>");
+            $('#' + currentRow).append("<div class='column' id=" + currentCol + " data-life=" + level[i][j].life + ">");
             
         }        
     }

@@ -5,34 +5,35 @@
     margin-top: 50px;
     height: 500px;
     width: 600px;
-    background-color: #000;
+    background-color: #6B8CFF;
     overflow: hidden;
 }
 
 .row{  
     display: flex;
     justify-content: center;
-    background-color: #000;
     font-family: Courier New, Courier, monospace;
     text-align: center;
-    background-color: silver;
 }
 
 .column{
     min-height: 30px;
     min-width: 100px;
     margin: 2px;   
-    background-color: #FFF;
+    background-image: url('assets/block.png');
+    
 }
 
 .ball{
     position: absolute;
-    width: 20px;
-    height: 20px;
-    background-color: #F00;
-    border-radius: 100px;
+    border: 0px;
+    width: 30px;
+    height: 30px;
     left: 300px;
     bottom: 40px;
+    background-image: url('assets/mario.png');
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .paddle{
@@ -40,5 +41,5 @@
     width: 100px;
     height: 20px;
     bottom: 0px;
-    background-color: grey;
+    background-image: url('assets/paddle.png');
 }
