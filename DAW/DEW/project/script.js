@@ -2,10 +2,10 @@
 $().ready(function(){
     
     var level = [
-        [{life: 0},{life: 0},{life: 1},{life: 0}], //this line with life: 0 means empty space
-        [{life: 1},{life: 1},{life: 1},{life: 1}],
-        [{life: 2},{life: 2},{life: 2},{life: 2}],
-        [{life: 3},{life: 3},{life: 0},{life: 3}],
+        [{life: 1},{life: 0},{life: 1},{life: 0},{life: 1},{life: 3},{life: 1}],
+        [{life: 1},{life: 1},{life: 1},{life: 1},{life: 0},{life: 2},{life: 2}],
+        [{life: 2},{life: 2},{life: 2},{life: 2},{life: 2},{life: 2},{life: 2}],
+        [{life: 3},{life: 0},{life: 0},{life: 3},{life: 3},{life: 3},{life: 0}]
     ];
 
     makeScenario(level);
@@ -89,30 +89,36 @@ $().ready(function(){
         }
 
         //column colission
-        $('.row').each(function(){
-            $(this).children('.column').each(function(){
+        $('.column').each(function(){
 
-                var column = this.getBoundingClientRect();
-                var life = $(this).attr("data-life");
+            var column = this.getBoundingClientRect();
+            var life = $(this).attr("data-life");
 
-                if(life != "0"){
-                    
-                    if((ball.bottom > column.top && 
-                        ball.top < column.bottom) && 
-                        (ball.right > column.left && 
-                        ball.left < column.right)){ 
+            if(life != "0"){
+                
+                if((ball.bottom > column.top && 
+                    ball.top < column.bottom) && 
+                    (ball.right > column.left && 
+                    ball.left < column.right)){
                         
-                        $(this).css( { "visibility" : "hidden" } );
-                        $('#ball').css( { "background-image" : "url('assets/mario-brick.png')" } );
-
-                        movX = -movX;
-                        movY = -movY;
-                            
+                    if(life > 0){
+                        $(this).attr( "data-life", life-=1 );
                     }
+                    
+                    if(life == 0){
+                        $(this).css( { "display" : "none" } );
+                    }
+                    
+                    $('#ball').css( { "background-image" : "url('assets/mario-brick.png')" } );
+                    movX = -movX;
+                    movY = -movY;
+                        
                 }
-            });         
+            }
+         
         });
         
+        $('#paddle').css( {"left" : ball.x - ball.width} );
         ball.x += movX;
         ball.y += movY;
             
@@ -138,7 +144,6 @@ function makeScenario(level){
             }else{
                 $('#' + currentRow).append("<div class='column' id=" + currentCol + " data-life=" + level[i][j].life + ">");
             }           
-
         }        
     }
 

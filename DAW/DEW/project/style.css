@@ -2,21 +2,26 @@
 #scenario{
     margin: 0 auto;
     margin-top: 50px;
+    padding-top: 20px;
     height: 500px;
     width: 600px;
     background-color: #6B8CFF;
+    background-image: url('assets/background-img.png');
+    background-repeat: repeat-x;
+    background-position: center bottom;
     overflow: hidden;
 }
 
 .row{  
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .column{
-    min-width: 100px;
-    min-height: 30px;
-    margin: 3px;
+    min-width: 50px;
+    min-height: 20px;
+    margin: 5px;
+    border-top: 1px solid white;
     background-image: url('assets/block.png');
 }
 
@@ -36,7 +41,7 @@
 #paddle{
     position: absolute;
     width: 100px;
-    height: 20px;
+    height: 25px;
     bottom: 0px;
     background-image: url('assets/paddle.png');
 }
