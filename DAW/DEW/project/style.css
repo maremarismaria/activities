@@ -1,6 +1,5 @@
 
 #scenario{
-    position: relative;
     margin: 0 auto;
     margin-top: 50px;
     height: 500px;
@@ -11,20 +10,17 @@
 
 .row{  
     display: flex;
-    justify-content: center;
-    font-family: Courier New, Courier, monospace;
-    text-align: center;
+    justify-content: space-between;
 }
 
 .column{
-    min-height: 30px;
     min-width: 100px;
-    margin: 2px;   
+    min-height: 30px;
+    margin: 3px;
     background-image: url('assets/block.png');
-    
 }
 
-.ball{
+#ball{
     position: absolute;
     border: 0px;
     width: 30px;
@@ -34,9 +30,10 @@
     background-image: url('assets/mario.png');
     background-repeat: no-repeat;
     background-size: cover;
+    /*background-color: white;*/
 }
 
-.paddle{
+#paddle{
     position: absolute;
     width: 100px;
     height: 20px;

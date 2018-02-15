@@ -2,110 +2,121 @@
 $().ready(function(){
     
     var level = [
-        [{life: 0},{life: 0},{life: 0},{life: 0}], //this line with life: 0 means empty space
+        [{life: 0},{life: 0},{life: 1},{life: 0}], //this line with life: 0 means empty space
         [{life: 1},{life: 1},{life: 1},{life: 1}],
         [{life: 2},{life: 2},{life: 2},{life: 2}],
-        [{life: 3},{life: 3},{life: 3},{life: 3}],
+        [{life: 3},{life: 3},{life: 0},{life: 3}],
     ];
 
     makeScenario(level);
 
     //scenario properties
-    var scenarioWidth = $('#scenario').width();
-    var scenarioHeight = $('#scenario').height();
-
-    //ball properties
-    var ballWidth = $('#ball').width();
-    var ballX = scenarioWidth / 2;
-    var ballY = scenarioHeight - (ballWidth * 2);
-    var movX = 1;
-    var movY = -1;
+    var scenario = ($('#scenario').get(0)).getBoundingClientRect();
     
     //paddle properties
-    var paddleHeight = $('#paddle').height();
-    var paddleWidth = $('#paddle').width();
-    var paddleX = scenarioWidth / 2;
-    var paddleY = scenarioHeight;
-    $('#paddle').css( {"left" : paddleX} );
+    var paddle = ($('#paddle').get(0)).getBoundingClientRect();
+    paddle.x = scenario.right / 2;
+    paddle.y = scenario.bottom - paddle.height;
+    $('#paddle').css( {"left" : paddle.x} );
+    $('#paddle').css( {"top" : paddle.y} );
 
     //paddle movement
     $(document).on('keydown', function(event){           
         if(event.which == 37){ //<-
-            paddleX -= 10;
-            $('#paddle').css( {"left" : paddleX} );
+            if(paddle.x > scenario.left){
+                paddle.x -= 10;
+                $('#paddle').css( {"left" : paddle.x} );
+            }
         }
 
         if(event.which == 39){ //->
-            paddleX += 10;
-            $('#paddle').css( {"left" : paddleX} );
+            if(paddle.x + paddle.width < scenario.right){
+                paddle.x += 10;
+                $('#paddle').css( {"left" : paddle.x} );
+            }
         }
     });
 
+    //ball properties
+    var ball = ($('#ball').get(0)).getBoundingClientRect();
+    ball.x = scenario.right / 2;
+    ball.y = scenario.bottom - (ball.width + paddle.height);
+    $('#ball').css( {"left" : ball.x} );
+    $('#ball').css( {"top" : ball.y} );
+    var movX = 1;
+    var movY = -1;
+
+
     setInterval(function(){
-
-        $('#ball').css( { "left" : ballX , "top" : ballY } );
-
+        
+        $('#ball').css( { "left" : ball.x , "top" : ball.y } );
+        
         //top
-        if(ballY < 0){ 
+        if(ball.y < scenario.top){ 
             $('#ball').css( { "background-image" : "url('assets/mario.png')" } );
             movY = -movY;
         }
 
         //bottom
-        if (ballY > scenarioHeight - ballWidth){ 
-            
+        if (ball.y > scenario.bottom - ball.width){ 
             $('#ball').css( { "background-image" : "url('assets/mario-dead.png')" } );
-            console.log("GAME OVER");
+            //console.log("GAME OVER");
             movY = -movY;
         }
 
         //left
-        if(ballX < 0){
+        if(ball.x < scenario.left){
             $('#ball').css( { "background-image" : "url('assets/mario.png')" } ); 
             movX = -movX;
         }
 
         //right
-        if (ballX > scenarioWidth - ballWidth){ 
+        if (ball.x > scenario.right - ball.width){ 
             $('#ball').css( { "background-image" : "url('assets/mario.png')" } );
             movX = -movX;
         }
 
         //paddle colission
-        if (ballX > paddleX && ballX < paddleX + paddleWidth && ballY == scenarioHeight - paddleHeight - ballWidth){ 
-            //$('#ball').css( { "background-color" : "blue" } );
+        if ((ball.bottom > paddle.top && 
+            ball.top < paddle.bottom) && 
+            (ball.right > paddle.left && 
+            ball.left < paddle.right)){ 
+
             $('#ball').css( { "background-image" : "url('assets/mario-paddle.png')" } );
+            
+            ball.x += movX;
             movY = -movY;
         }
-        
+
         //column colission
-        $('.row').each(function() {
+        $('.row').each(function(){
+            $(this).children('.column').each(function(){
 
-            var row = this.getBoundingClientRect(); 
-            
-            if(ballX + ballWidth > row.x && ballY + ballWidth < row.y){
-                console.log("hey");
+                var column = this.getBoundingClientRect();
+                var life = $(this).attr("data-life");
 
-                movY = -movY;
-
-                $(this).children('.column').each(function(){
-
-                    var column = this.getBoundingClientRect();
+                if(life != "0"){
                     
-                    if(ballX > column.left && ballX < column.right){
+                    if((ball.bottom > column.top && 
+                        ball.top < column.bottom) && 
+                        (ball.right > column.left && 
+                        ball.left < column.right)){ 
+                        
+                        $(this).css( { "visibility" : "hidden" } );
+                        $('#ball').css( { "background-image" : "url('assets/mario-brick.png')" } );
+
+                        movX = -movX;
+                        movY = -movY;
                             
                     }
-                    
-                });
-
-            }
-
+                }
+            });         
         });
-
-        ballX += movX;
-        ballY += movY;
+        
+        ball.x += movX;
+        ball.y += movY;
             
-    }, 3);
+    }, 6);
 
 });
 
@@ -122,12 +133,16 @@ function makeScenario(level){
 
             var currentCol = 'col-' + j;
 
-            $('#' + currentRow).append("<div class='column' id=" + currentCol + " data-life=" + level[i][j].life + ">");
-            
+            if(level[i][j].life == 0){
+                $('#' + currentRow).append("<div class='column' id=" + currentCol + " data-life=" + level[i][j].life + " style='visibility:hidden;'>");
+            }else{
+                $('#' + currentRow).append("<div class='column' id=" + currentCol + " data-life=" + level[i][j].life + ">");
+            }           
+
         }        
     }
 
-    $('#scenario').append("<div class= 'ball' id='ball'>");
-    $('#scenario').append("<div class='paddle' id='paddle'>");
+    $('#scenario').append("<div id='ball'>");
+    $('#scenario').append("<div id='paddle'>");
 
 }
