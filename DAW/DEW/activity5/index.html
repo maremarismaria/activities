@@ -16,6 +16,7 @@
         text-align: center;
         width: 50px;
         border-radius: 5px;
+        cursor: pointer;
       }
     </style>
   </head>
@@ -28,19 +29,160 @@
       <li>When 1 audio ends the following one must estart playing automatically</li>
     </ul>
 
-    <ol>
-      <li>music1.mp3</li>
-      <li>music2.mp3</li>
-      <li>music3.mp3</li>
+    <ol id="playList">
     </ol>
-    <audio>
-     <source src="" type="audio/mpeg">
-     Your browser does not support the audio tag.
+
+    <!--
+      All music included is licensed under a CC0 1.0 Universal License.
+      More info:
+        http://freemusicarchive.org/music/Soft_and_Furious/Fluid/Soft_and_Furious_-_Fluid_-_02_Soft_and_Nothing
+        http://freemusicarchive.org/music/Loyalty_Freak_Music/ROBOT_DANCE_/Loyalty_Freak_Music_-_ROBOT_DANCE__-_01_Everyone_is_so_alive
+        http://freemusicarchive.org/music/Loyalty_Freak_Music/ROBOT_DANCE_/Loyalty_Freak_Music_-_ROBOT_DANCE__-_02_High_Technologic_Beat_Explosion
+    -->
+
+    <audio id="player">
+      <source src="music/Soft and Furious - Soft and Nothing.mp3" type="audio/mpeg">
+      <source src="music/Loyalty Freak Music - Everyone is so alive.mp3" type="audio/mpeg">
+      <source src="music/Loyalty Freak Music -  High Technologic Beat Explosion.mp3" type="audio/mpeg">
+      Your browser does not support the audio tag.
     </audio>
+    
     <div class="controls">
-      <div class="play"><i class="fa fa-play"></i></div>
+      <div class="play"><i id="playPause" class="fa fa-play"></i></div>
+      <div class="stop"><i class="fa fa-stop"></i></div>
       <div class="backward"><i class="fa fa-step-backward"></i></div>
       <div class="fordward"><i class="fa fa-step-forward"></i></div>
     </div>
+
+    <script>
+      
+      var player = document.getElementById('player');
+      var currentTrack = player.currentSrc;
+
+      function printPlayList(parent, array){
+        var list = document.getElementById(parent);
+  
+        for (var i = 0; i < array.length; i++) {
+            var item = document.createElement("LI");
+            var text = document.createTextNode(array[i] + " ");
+            var icon = document.createElement("I");
+            
+            item.appendChild(text);
+            item.appendChild(icon);
+            list.appendChild(item);
+        }
+      }
+
+      function addIconToCurrentTrackInPlayList(){
+        var current = player.indexOfCurrentTrackInPlayList();
+        var listItems = document.getElementById("playList").children;
+
+        for (var i = 0; i < listItems.length; i++) {
+          var listItem = listItems[i];
+
+          if(listItem.lastChild.nodeName == "I" && current == i){
+            listItem.lastChild.setAttribute("class", "fa fa-play");
+          }else{
+            listItem.lastChild.removeAttribute("class");
+          }
+        }
+      }
+      
+      player.getPlayListSources = function(){
+        var sources = [];
+
+        for (var i = 0; i < player.children.length; i++) {
+          var uri = player.children[i].src;
+          sources.push(uri);      
+        }
+
+        return sources;
+      };
+
+      player.getPlayListTitles = function(){
+        var titles = [];
+        
+        for (var i = 0; i < player.children.length; i++) {
+          var uri = player.children[i].src;
+          var title = decodeURI(uri.substring(uri.lastIndexOf("/") + 1)).replace(".mp3", '');
+          titles.push(title);         
+        }
+        
+        return titles;
+      };
+     
+      player.indexOfCurrentTrackInPlayList = function(){
+        var uri = player.currentSrc;
+        var currentTitle = decodeURI(uri.substring(uri.lastIndexOf("/") + 1)).replace(".mp3", '');
+        var playList = player.getPlayListTitles();
+        return playList.indexOf(currentTitle);
+      }
+
+      var sources = player.getPlayListSources();
+      printPlayList("playList", player.getPlayListTitles());
+
+      player.playPause = function(){
+        player.paused ? player.play() : player.pause();        
+      };
+
+      player.changePlayPauseClass = function(){
+        player.paused ? classChanged = "fa fa-pause" : classChanged = "fa fa-play";
+        document.getElementById('playPause').className = classChanged;
+      }
+
+      player.backward = function(){
+        if(sources.length > 0){
+          if(sources.indexOf(currentTrack) == 0){
+            currentTrack = sources[sources.length - 1];
+          }else{
+            currentTrack = sources[sources.indexOf(currentTrack) - 1];
+          }
+
+          player.src = currentTrack;
+          player.play();
+        }
+      };
+
+      player.fordward = function(){
+        if(sources.length > 0){
+          if(sources.indexOf(currentTrack) < sources.length - 1){
+            currentTrack = sources[sources.indexOf(currentTrack) + 1];
+          }else{
+            currentTrack = sources[0];
+          }
+
+          player.src = currentTrack;
+          player.play();
+        }
+      };
+
+      
+      document.getElementsByClassName('play')[0].addEventListener('click', function(){
+        player.playPause();
+        player.changePlayPauseClass();
+        addIconToCurrentTrackInPlayList();
+      }); 
+      
+      document.getElementsByClassName('stop')[0].addEventListener('click', function(){
+        player.load();
+      });
+
+      document.getElementsByClassName('backward')[0].addEventListener('click', function(){
+        player.backward();
+        addIconToCurrentTrackInPlayList();
+      });
+
+      document.getElementsByClassName('fordward')[0].addEventListener('click', function(){
+        player.fordward();
+        addIconToCurrentTrackInPlayList();
+      });
+
+      player.addEventListener('ended', function(){
+        player.fordward();
+        addIconToCurrentTrackInPlayList();
+      });
+
+    </script>
+
   </body>
 </html>
