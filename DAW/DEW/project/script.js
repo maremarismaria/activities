@@ -89,7 +89,7 @@ $().ready(function(){
         }
 
         //column colission
-        $('.column').each(function(){
+        $('.column:not(.noLifes)').each(function(){
 
             var column = this.getBoundingClientRect();
             var life = $(this).attr("data-life");
@@ -106,7 +106,8 @@ $().ready(function(){
                     }
                     
                     if(life == 0){
-                        $(this).css( { "display" : "none" } );
+                        $(this).css( { "visibility" : "hidden" } );
+                        $(this).addClass('noLifes');
                     }
                     
                     $('#ball').css( { "background-image" : "url('assets/mario-brick.png')" } );
